@@ -1,4 +1,4 @@
-package com.aathi.hangout;
+package com.aathi.hangoutapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.aathi.hangout", appContext.getPackageName());
+        assertEquals("com.aathi.hangoutapp", appContext.getPackageName());
     }
 }

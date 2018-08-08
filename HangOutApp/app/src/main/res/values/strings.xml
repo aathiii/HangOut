@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">HangOut</string>
+    <string name="app_name">HangOutApp</string>
+    <string name="title_activity_maps">HangOut</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.aathi.hangout;
+package com.aathi.hangoutapp;
 
 import org.junit.Test;
 
