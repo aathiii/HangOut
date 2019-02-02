@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">HangOut</string>
     <string name="title_activity_maps">HangOut</string>
+    <string name="facebook_application_id" translatable="false">278174089488302</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">278174089488302</string>
+    <string name="Facebook_Application_ID" translatable="false">278174089488302</string>
 </resources>

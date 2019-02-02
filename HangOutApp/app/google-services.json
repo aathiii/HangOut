@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "753664385005",
+    "firebase_url": "https://vernal-signal-212710.firebaseio.com",
+    "project_id": "vernal-signal-212710",
+    "storage_bucket": "vernal-signal-212710.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753664385005:android:b397a25bd4365ddd",
+        "android_client_info": {
+          "package_name": "com.aathi.hangoutapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753664385005-3p18agf59tdj63ubmsm63tg2qdqs4fod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aathi.hangoutapp",
+            "certificate_hash": "705b38941e69253e630b333d1b64fb96e25c5c18"
+          }
+        },
+        {
+          "client_id": "753664385005-8bou4ubgldvgu5gdo0smmo6n3inocfa9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXaqo-OsxPpOXw2AG28w_VzbP_NMQqChA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753664385005-8bou4ubgldvgu5gdo0smmo6n3inocfa9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
