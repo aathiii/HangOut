@@ -1,7 +1,9 @@
 package com.aathi.hangoutapp;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.input.InputManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -188,6 +191,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onClick (View v)
     {
+        closeKeyboard();
+
         switch (v.getId())
         {
             case R.id.search_button:
@@ -240,8 +245,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
 
         }
+
+
     }
 
+    private void closeKeyboard()
+    {
+        View view = this.getCurrentFocus();
+        if (view !=null)
+        {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
+    }
 
 
     @Override
