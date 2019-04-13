@@ -6,19 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <RadioButton
+        android:id="@+id/radioButton13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Park"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="452dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shopping "
+        tools:layout_editor_absoluteX="267dp"
+        tools:layout_editor_absoluteY="452dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Night Club"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="452dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zoo"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="505dp" />
+
     <Button
         android:id="@+id/map_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Start"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="DONE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.915" />
 
     <Button
         android:id="@+id/logout_button"
@@ -27,4 +61,117 @@
         android:text="Log out"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CUISINES"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="149dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="THINGS TO DO"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="308dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Indian"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="193dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bowling"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cafe"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Casino"
+        tools:layout_editor_absoluteX="267dp"
+        tools:layout_editor_absoluteY="348dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Casino"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="399dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Library"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="399dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cinema"
+        tools:layout_editor_absoluteX="267dp"
+        tools:layout_editor_absoluteY="399dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mexican"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="249dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mexican"
+        tools:layout_editor_absoluteX="163dp"
+        tools:layout_editor_absoluteY="249dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chinese"
+        tools:layout_editor_absoluteX="138dp"
+        tools:layout_editor_absoluteY="193dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Italian"
+        tools:layout_editor_absoluteX="243dp"
+        tools:layout_editor_absoluteY="193dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CHOOSE THE THINGS YOU LIKE "
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="78dp" />
+
 </android.support.constraint.ConstraintLayout>

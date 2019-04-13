@@ -48,10 +48,17 @@ public class MainActivity extends AppCompatActivity {
         mapButton = findViewById(R.id.map_button);
         logoutButton = findViewById(R.id.logout_button);
 
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                startActivityForResult(AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Arrays.asList(
+                                new AuthUI.IdpConfig.EmailBuilder().build(),
+                                new AuthUI.IdpConfig.FacebookBuilder().build()))
+                        .build(), RC_SIGN_IN);
 
             }
         });

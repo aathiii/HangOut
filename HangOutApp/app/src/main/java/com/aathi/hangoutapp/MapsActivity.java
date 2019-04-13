@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -48,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastLocation;
     private Marker currentLocationMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
+    private Double latitude, longitude;
+    private int proximity = 10000;
+    private UrlBuilder urlBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +130,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location location)
+    {
 
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         lastLocation = location;
 
         if(currentLocationMarker!=null)
@@ -193,6 +201,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         closeKeyboard();
 
+        String food = "meal_takeaway", activity="movie_theater";
+        Object transferData[] = new Object[2];
+        GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
+        System.out.println("Onclick is working");
+
         switch (v.getId())
         {
             case R.id.search_button:
@@ -213,10 +226,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         if(addressList != null)
                         {
+                            mMap.clear();
                             for(int i=0; i<addressList.size(); i++)
                             {
                                 Address userAddress = addressList.get(i);
                                 LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+                                latitude = userAddress.getLatitude();
+                                longitude = userAddress.getLongitude();
 
                                 usermarkerOptions.position(latLng);
                                 usermarkerOptions.title(address);
@@ -244,8 +260,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 break;
 
+            case R.id.food_button:
+                mMap.clear();
+//                transferData[0] = mMap;
+//                transferData[1] = getUrl(latitude,longitude,"meal_takeaway");
+//                transferData[2] = getUrl(latitude,longitude,"airport");
+
+                List<String> urls = new ArrayList<>();
+                urls.add(getUrl(latitude,longitude,"meal_takeaway"));
+                urls.add(getUrl(latitude,longitude,"airport"));
+
+
+
+                for (int i = 0; i <urls.size() ; i++)
+                {
+                    transferData[0] = mMap;
+                    transferData[1] = urls.get(i);
+                    GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
+                    nearbyPlaces.execute(transferData);
+
+                }
+
+
+//                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Looking for Nearby Restaurants", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.activity_button:
+                mMap.clear();
+                transferData[0]= mMap;
+                transferData[1]=getUrl(latitude,longitude, activity);
+
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Looking for Nearby Activities", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing Nearby Activities", Toast.LENGTH_SHORT).show();
+                break;
+
         }
 
+
+    }
+
+    private String getUrl(double latitude, double longitude, String nearbyPlace)
+    {
+        StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googleURL.append("location="+ latitude + "," + longitude);
+        googleURL.append("&radius=" + proximity);
+        googleURL.append("&type=" + nearbyPlace);
+        googleURL.append("&sensor=true");
+        googleURL.append("&key=" + "AIzaSyDn8jAo3Ygch_oMVqdxKQF5Kh1fXF0wrGw");
+        System.out.println(googleURL);
+
+        Log.d("GoogleMapsActivity", "url = " + googleURL.toString());
+
+        return googleURL.toString();
 
     }
 
