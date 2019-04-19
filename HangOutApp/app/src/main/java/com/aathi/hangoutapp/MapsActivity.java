@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
@@ -52,7 +53,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION_CODE = 99;
     private Double latitude, longitude;
     private int proximity = 10000;
-    private UrlBuilder urlBuilder;
+
+    /*
+     * TODO: MapsActivity - Multiple types Google API calls (Restaurants + Take_Away)
+     * TODO: MapsActivity - Recommendation (User likes) + Recommendation (Other user visited places)
+     * TODO: MapsActivity - Adding places visited from the results markers
+     * TODO: MapsActivity - Change default location to London
+     * TODO: MapsActivity - Send visited places
+     * TODO: MapsActivity - CLEAN CODE
+     *
+     *
+     *
+     *
+     * */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         closeKeyboard();
 
         String food = "meal_takeaway", activity="movie_theater";
-        Object transferData[] = new Object[2];
+        Object transferData[] = new Object[3];
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
         System.out.println("Onclick is working");
 
@@ -262,41 +275,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             case R.id.food_button:
                 mMap.clear();
-//                transferData[0] = mMap;
-//                transferData[1] = getUrl(latitude,longitude,"meal_takeaway");
-//                transferData[2] = getUrl(latitude,longitude,"airport");
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        System.out.println("Marker Clicked");
+                        if (marker.isInfoWindowShown()){
+                            marker.hideInfoWindow();
+                        } else {
+                            marker.showInfoWindow();
+                        }
 
+                        // Do our shit
+
+                        System.out.println("Title on maker: " + marker.getTitle() + "Lat:" + marker.getPosition());
+                        // send to backends
+
+                        return true;
+                    }
+                });
                 List<String> urls = new ArrayList<>();
-                urls.add(getUrl(latitude,longitude,"meal_takeaway"));
                 urls.add(getUrl(latitude,longitude,"airport"));
+                urls.add(getUrl(latitude,longitude,"meal_takeaway"));
 
+                List<HashMap<String,String>> nearbyPlacesList = new ArrayList<>();
 
 
                 for (int i = 0; i <urls.size() ; i++)
                 {
                     transferData[0] = mMap;
                     transferData[1] = urls.get(i);
+                    transferData[2] = nearbyPlacesList;
                     GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
                     nearbyPlaces.execute(transferData);
 
                 }
 
-
-//                getNearbyPlaces.execute(transferData);
                 Toast.makeText(this, "Looking for Nearby Restaurants", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.activity_button:
                 mMap.clear();
+                List<HashMap<String,String>> nearbyPlacesList2 = new ArrayList<>();
                 transferData[0]= mMap;
                 transferData[1]=getUrl(latitude,longitude, activity);
+                transferData[2] = nearbyPlacesList2;
+                GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
+                nearbyPlaces.execute(transferData);
 
-
-                getNearbyPlaces.execute(transferData);
                 Toast.makeText(this, "Looking for Nearby Activities", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Showing Nearby Activities", Toast.LENGTH_SHORT).show();
                 break;
+
+            case R.id.settings_button:
+                super.onBackPressed();
+                return;
 
         }
 

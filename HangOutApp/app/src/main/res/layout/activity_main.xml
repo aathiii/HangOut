@@ -1,177 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <RadioButton
-        android:id="@+id/radioButton13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Park"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="452dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Shopping "
-        tools:layout_editor_absoluteX="267dp"
-        tools:layout_editor_absoluteY="452dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Night Club"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="452dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zoo"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="505dp" />
-
-    <Button
-        android:id="@+id/map_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="DONE"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.915" />
-
-    <Button
-        android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log out"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-
+    <!-- Text Title -->
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/header_title_txt"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CUISINES"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="149dp" />
+        android:layout_marginBottom="50dp"
+        android:text="Please Select Things you like"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+    <!--  Category Layout: Cusines -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="THINGS TO DO"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="308dp" />
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        >
 
-    <RadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cusines"
+            android:textSize="40dp" />
+
+        <!-- Button Group: needed to indent -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            >
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_indian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indian" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_chinese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chinese" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_mexican"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mexican" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!--  Category Layout: Things to do -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Indian"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="193dp" />
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        >
 
-    <RadioButton
-        android:id="@+id/radioButton6"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Things To Do"
+            android:textSize="40dp" />
+
+        <!-- Button Group: needed to indent -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            >
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_park"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Park" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_cinema"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cinema" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bar" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_bowling"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bowling" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkBox_zoo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zoo" />
+
+            </LinearLayout>
+
+            <!-- Button + Label Group -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+
+                    android:id="@+id/checkBox_shopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shopping" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bowling"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="348dp" />
+        android:layout_marginTop="40dp"
+        >
 
-    <RadioButton
-        android:id="@+id/radioButton7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cafe"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="348dp" />
 
-    <RadioButton
-        android:id="@+id/radioButton8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Casino"
-        tools:layout_editor_absoluteX="267dp"
-        tools:layout_editor_absoluteY="348dp" />
+        <Button
+            android:layout_marginLeft="10dp"
+            android:id="@+id/logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            />
 
-    <RadioButton
-        android:id="@+id/radioButton9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Casino"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="399dp" />
+        <Button
+            android:layout_marginLeft="200dp"
+            android:id="@+id/map_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done"
 
-    <RadioButton
-        android:id="@+id/radioButton10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Library"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="399dp" />
+            />
 
-    <RadioButton
-        android:id="@+id/radioButton11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cinema"
-        tools:layout_editor_absoluteX="267dp"
-        tools:layout_editor_absoluteY="399dp" />
+    </LinearLayout>
 
-    <RadioButton
-        android:id="@+id/radioButton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mexican"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="249dp" />
 
-    <RadioButton
-        android:id="@+id/radioButton5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mexican"
-        tools:layout_editor_absoluteX="163dp"
-        tools:layout_editor_absoluteY="249dp" />
 
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chinese"
-        tools:layout_editor_absoluteX="138dp"
-        tools:layout_editor_absoluteY="193dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Italian"
-        tools:layout_editor_absoluteX="243dp"
-        tools:layout_editor_absoluteY="193dp" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CHOOSE THE THINGS YOU LIKE "
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="78dp" />
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -9,6 +9,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,12 +19,14 @@ public class GetNearbyPlaces extends AsyncTask <Object, String, String>
 
     private String googlePlaceData, url;
     private GoogleMap mMap;
+    private List<HashMap<String,String>> nearbyPlacesList;
 
     @Override
     protected String doInBackground(Object... objects)
     {
         mMap = (GoogleMap) objects[0];
         url = (String) objects[1];
+        nearbyPlacesList = (List) objects[2];
 
         DownloadURL downloadURL = new DownloadURL();
         try
@@ -39,9 +43,9 @@ public class GetNearbyPlaces extends AsyncTask <Object, String, String>
     @Override
     protected void onPostExecute(String s)
     {
-        List<HashMap<String,String>> nearbyPlacesList = null;
         DataParser dataParser = new DataParser();
-        nearbyPlacesList = dataParser.parse(s);
+        nearbyPlacesList.addAll(dataParser.parse(s));
+        System.out.println(Arrays.toString(nearbyPlacesList.toArray()));
         displayNearbyPlaces(nearbyPlacesList);
     }
 
