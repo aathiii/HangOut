@@ -21,6 +21,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,8 +44,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,13 +68,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION_CODE = 99;
     private Double latitude, longitude;
     private int proximity = 10000;
+    private String uid;
+
+
+    // Global Marker Variables
+    private String name;
+    private String lat;
+    private String lon;
+
 
     /*
      * TODO: MapsActivity - Multiple types Google API calls (Restaurants + Take_Away)
-     * TODO: MapsActivity - Recommendation (User likes) + Recommendation (Other user visited places)
-     * TODO: MapsActivity - Adding places visited from the results markers
+     * TODO: MapsActivity - Recommendation (User likes) + Recommendation (Other user visited places) /get_recs BACKEND
+     * TODO: MapsActivity - Adding places visited from the results markers /visited BACKEND !!!!!DONE
      * TODO: MapsActivity - Change default location to London
-     * TODO: MapsActivity - Send visited places
+     * TODO: MapsActivity - After searching a location, current location suggestions doesn't work brings back searched place suggestions
+     *
      * TODO: MapsActivity - CLEAN CODE
      *
      *
@@ -71,6 +95,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        uid = auth.getCurrentUser().getUid();
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -219,6 +246,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GetNearbyPlaces getNearbyPlaces = new GetNearbyPlaces();
         System.out.println("Onclick is working");
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                System.out.println("Marker Clicked");
+                if (marker.isInfoWindowShown()){
+                    marker.hideInfoWindow();
+                } else {
+                    marker.showInfoWindow();
+                }
+
+                // Do our shit
+
+                System.out.println("Title on maker: " + marker.getTitle() + "Lat:" + marker.getPosition());
+
+                lat = String.valueOf(marker.getPosition().latitude);
+                lon = String.valueOf(marker.getPosition().longitude);
+                name = marker.getTitle();
+                // send to backends
+                return true;
+            }
+        });
+
         switch (v.getId())
         {
             case R.id.search_button:
@@ -275,24 +324,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             case R.id.food_button:
                 mMap.clear();
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        System.out.println("Marker Clicked");
-                        if (marker.isInfoWindowShown()){
-                            marker.hideInfoWindow();
-                        } else {
-                            marker.showInfoWindow();
-                        }
 
-                        // Do our shit
-
-                        System.out.println("Title on maker: " + marker.getTitle() + "Lat:" + marker.getPosition());
-                        // send to backends
-
-                        return true;
-                    }
-                });
                 List<String> urls = new ArrayList<>();
                 urls.add(getUrl(latitude,longitude,"airport"));
                 urls.add(getUrl(latitude,longitude,"meal_takeaway"));
@@ -331,6 +363,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 super.onBackPressed();
                 return;
 
+            case R.id.visited_button:
+                postVisited(uid,name,lat, lon);
+
         }
 
 
@@ -359,6 +394,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
+    }
+
+    private void postVisited(String uid, String name, String lat, String lon){
+        final String BASE_URL = "http://81.133.242.237:9920";
+        final String endpoint = "/visited";
+        String URL =  BASE_URL + endpoint;
+        System.out.println("postVisited Name:" + name);
+        System.out.println("postVisited lat" + lat);
+        System.out.println("postVisited lon" + lon);
+        System.out.println("postVisited uid" + uid);
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("user_id", uid);
+
+            JSONObject place = new JSONObject();
+            place.put("name", name);
+            place.put("lat", lat);
+            place.put("long", lon);
+            jsonBody.put("place", place);
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    System.out.println("On Response: " + response.toString());
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println("On Error: " + error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                        // can get more details such as response.headers
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

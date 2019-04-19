@@ -76,13 +76,15 @@ android:orientation="vertical">
         tools:context="com.viralandroid.googlemapsandroidapi.MapsActivity">
 
         <Button
+            android:id="@+id/visited_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|top"
             android:text="Interested"
             android:padding="10dp"
             android:layout_marginTop="20dp"
-            android:paddingLeft="70dp"/>
+            android:paddingLeft="70dp"
+            android:onClick="onClick"/>
 
 
 

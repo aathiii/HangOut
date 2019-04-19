@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
      * TODO: MainActivity - Connect View Checkboxes to Controller !!!!DONE
      * TODO: MainActivity - Send Likes + UID
      * TODO: MainActivity - Send UID on SignUp
-     * TODO: MainActivity - Check if UID already exists in backend
+     * TODO: MainActivity - Check if UID already exists in backend    !!Please confirm with backend
      * TODO: MainActivity - Clean code
      *
      *
