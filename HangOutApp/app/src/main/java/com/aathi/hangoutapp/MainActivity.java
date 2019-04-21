@@ -1,5 +1,6 @@
 package com.aathi.hangoutapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -48,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
-     * TODO: MainActivity - Connect View Checkboxes to Controller !!!!DONE
-     * TODO: MainActivity - Send Likes + UID
-     * TODO: MainActivity - Send UID on SignUp
-     * TODO: MainActivity - Check if UID already exists in backend    !!Please confirm with backend
      * TODO: MainActivity - Clean code
      *
      *
@@ -80,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
                             new AuthUI.IdpConfig.FacebookBuilder().build()))
                     .build(), RC_SIGN_IN);
 
-            postToBackend(auth.getCurrentUser().getUid());
+
+
+
         }
 
 
@@ -92,12 +91,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                startActivityForResult(AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Arrays.asList(
-                                new AuthUI.IdpConfig.EmailBuilder().build(),
-                                new AuthUI.IdpConfig.FacebookBuilder().build()))
-                        .build(), RC_SIGN_IN);
+                finish();
+                System.out.println("12345678: I AM IN Logout");
+//                startActivityForResult(AuthUI.getInstance()
+//                        .createSignInIntentBuilder()
+//                        .setAvailableProviders(Arrays.asList(
+//                                new AuthUI.IdpConfig.EmailBuilder().build(),
+//                                new AuthUI.IdpConfig.FacebookBuilder().build()))
+//                        .build(), RC_SIGN_IN);
+//                FirebaseAuth auth = FirebaseAuth.getInstance();
+//
+//                System.out.println("12345678: I AM IN after logout");
+//                System.out.println("12345678: I AM IN There");
+//                if(auth.getCurrentUser() !=null) {
+//                    String uid = auth.getCurrentUser().getUid();
+//                    System.out.println("I am the UID: "+uid);
+//                    postToBackend(uid);
+//                } else {
+//                    System.out.println("12345678: Ima shit");
+//                }
+////                FirebaseAuth auth = FirebaseAuth.getInstance();
+////                postToBackend(auth.getCurrentUser().getUid());
+
             }
         });
 
@@ -110,6 +125,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == RC_SIGN_IN) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                uid = auth.getCurrentUser().getUid();
+                postToBackend(uid);
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
     }
 
     private void getCheckedCategories() {
@@ -163,40 +195,14 @@ public class MainActivity extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", uid);
-
-
-            // On client
-            // "likes": [
-            //  "Indian",
-            //  "Bowling"
-            // ]
-
-            /*
-            * "likes" [
-            *   {
-            *       "name": "Indian",
-            *       "type": "IntrestedIn"
-            *   },
-            *   {
-            *       "name": "Bowling",
-            *       "type": "IntrestedIn"
-            *   }
-            * ]
-            *
-            *
-            * */
-
-
-            /* On Server
-            * {
-            *   "_items":[],
-            *   "attributes":{},
-            *   "length":0}
-            * */
             JSONArray likes = new JSONArray();
+
             for (int i = 0; i < userLikes.size(); i++) {
+                JSONObject tempItem = new JSONObject();
+                tempItem.put("name", userLikes.get(i));
+                tempItem.put("type", "InterestedIn");
                 System.out.println("Before Sending to UpdateLikes Item: " + userLikes.get(i));
-                likes.put(userLikes.get(i));
+                likes.put(tempItem);
             }
 
             System.out.println("JSON Array Looks like this: " + likes.toString());
@@ -303,10 +309,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+
 
 
 }
