@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button logoutButton;
     private static int RC_SIGN_IN = 0;
     private String uid;
+    private ArrayList<String> userLikes = new ArrayList<>();
 
 
     /*
@@ -64,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         {
             //User already signed in
             uid = auth.getCurrentUser().getUid();
-            System.out.println("USER_ID: " + uid);
-            postToBackend(uid);
         }
         else
         {
@@ -73,13 +72,8 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(Arrays.asList(
-                            new AuthUI.IdpConfig.EmailBuilder().build(),
-                            new AuthUI.IdpConfig.FacebookBuilder().build()))
+                            new AuthUI.IdpConfig.EmailBuilder().build()))
                     .build(), RC_SIGN_IN);
-
-
-
-
         }
 
 
@@ -91,28 +85,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                finish();
                 System.out.println("12345678: I AM IN Logout");
-//                startActivityForResult(AuthUI.getInstance()
-//                        .createSignInIntentBuilder()
-//                        .setAvailableProviders(Arrays.asList(
-//                                new AuthUI.IdpConfig.EmailBuilder().build(),
-//                                new AuthUI.IdpConfig.FacebookBuilder().build()))
-//                        .build(), RC_SIGN_IN);
-//                FirebaseAuth auth = FirebaseAuth.getInstance();
-//
-//                System.out.println("12345678: I AM IN after logout");
-//                System.out.println("12345678: I AM IN There");
-//                if(auth.getCurrentUser() !=null) {
-//                    String uid = auth.getCurrentUser().getUid();
-//                    System.out.println("I am the UID: "+uid);
-//                    postToBackend(uid);
-//                } else {
-//                    System.out.println("12345678: Ima shit");
-//                }
-////                FirebaseAuth auth = FirebaseAuth.getInstance();
-////                postToBackend(auth.getCurrentUser().getUid());
-
+                startActivityForResult(AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Arrays.asList(
+                                new AuthUI.IdpConfig.EmailBuilder().build()))
+                        .build(), RC_SIGN_IN);
             }
         });
 
@@ -120,7 +98,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getCheckedCategories();
+
+                // Add only selected items  from options
                 Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                intent.putStringArrayListExtra("userLikes", userLikes);
                 startActivity(intent);
             }
         });
@@ -136,10 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 uid = auth.getCurrentUser().getUid();
                 postToBackend(uid);
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
 
-                // Do something with the contact here (bigger example below)
             }
         }
     }
@@ -168,18 +146,20 @@ public class MainActivity extends AppCompatActivity {
         allCheckBoxes.add(zoo);
         allCheckBoxes.add(shopping);
 
-        ArrayList<String> userLikes = new ArrayList<>();
         // Loop list and check each item for checked status
         for (int i = 0; i < allCheckBoxes.size() ; i++) {
             CheckBox current = allCheckBoxes.get(i);
             if (current.isChecked()){
-                userLikes.add(current.getText().toString());
+                this.userLikes.add(current.getText().toString());
             }
         }
 
         for (String s: userLikes) {
             System.out.println(s);
         }
+
+
+
 
         postUpdateLikes(userLikes);
     }

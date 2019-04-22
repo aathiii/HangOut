@@ -74,14 +74,27 @@ public class DataParser
 
     public  List<HashMap<String,String>> parse(String jSONdata)
     {
-        JSONArray jsonArray = null;
+        JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject;
 
 
         try
         {
-            jsonObject = new JSONObject(jSONdata);
-            jsonArray = jsonObject.getJSONArray("results");
+            System.out.println("oijuhnmkjuhnmkjnm,k");
+            System.out.println(jSONdata);
+            //jsonObject = new JSONObject(jSONdata);
+            //System.out.println(jsonObject);
+            //System.out.println(jsonObject.toString(2));
+            JSONArray data = new JSONArray(jSONdata);
+            JSONArray tmp;
+            for (int i = 0; i<data.length(); i++){
+                tmp = (JSONArray) data.get(i);
+                for (int j = 0; j<tmp.length(); j++){
+                    jsonArray.put(tmp.get(j));
+                }
+            }
+            System.out.println(jsonArray);
+            System.out.println(jsonArray.length());
         }
         catch (JSONException e)
         {

@@ -2,11 +2,13 @@ package com.aathi.hangoutapp;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -119,6 +122,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 });
+
     }
 
     @Override
@@ -162,6 +166,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMapToolbarEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
+                @Override
+                public boolean onMyLocationButtonClick()
+                {
+                    System.out.println("ifhsoudfhsiuvbsioudvnsidvbi");
+                    MarkerOptions usermarkerOptions = new MarkerOptions();
+                    Location userAddress = mMap.getMyLocation();
+                    LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+                    latitude = userAddress.getLatitude();
+                    longitude = userAddress.getLongitude();
+
+                    usermarkerOptions.position(latLng);
+                    usermarkerOptions.title("You");
+                    usermarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                    mMap.addMarker(usermarkerOptions);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+                    return true;
+                }
+            });
         }
 
 
@@ -248,12 +273,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     marker.showInfoWindow();
                 }
 
-
                 lat = String.valueOf(marker.getPosition().latitude);
                 lon = String.valueOf(marker.getPosition().longitude);
                 name = marker.getTitle();
 
-                return true;
+                return false;
             }
         });
 
@@ -304,20 +328,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.getUiSettings().setMapToolbarEnabled(true);
 
                 List<String> urls = new ArrayList<>();
-                urls.add(getUrl(latitude, longitude, "airport"));
+                urls.add(getUrl(latitude, longitude, "restaurant"));
                 urls.add(getUrl(latitude, longitude, "meal_takeaway"));
 
                 List<HashMap<String, String>> nearbyPlacesList = new ArrayList<>();
 
 
-                for (int i = 0; i < urls.size(); i++) {
                     transferData[0] = mMap;
-                    transferData[1] = urls.get(i);
+                    transferData[1] = urls;
                     transferData[2] = nearbyPlacesList;
                     GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
                     nearbyPlaces.execute(transferData);
 
-                }
 
                 Toast.makeText(this, "Looking for Nearby Restaurants", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Showing Nearby Restaurants", Toast.LENGTH_SHORT).show();
@@ -325,12 +347,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             case R.id.activity_button:
                 mMap.clear();
-                List<HashMap<String, String>> nearbyPlacesList2 = new ArrayList<>();
+                urls = new ArrayList<>();
+                Intent previousScreen = getIntent();
+                ArrayList<String> userLikes = previousScreen.getStringArrayListExtra("userLikes");
+
+                for (int i = 0; i < userLikes.size(); i++) {
+                    System.out.println(userLikes.get(i));
+                    switch (userLikes.get(i)) {
+                        case "Cinema":
+                            System.out.println("Added " + userLikes.get(i));
+                            urls.add(getUrl(latitude, longitude, "movie_theater"));
+                            break;
+                        case "Park":
+                            System.out.println("Added " + userLikes.get(i));
+                            urls.add(getUrl(latitude, longitude, "park"));
+                            break;
+                        case "Bar":
+                            System.out.println("Added " + userLikes.get(i));
+                            urls.add(getUrl(latitude, longitude, "bar"));
+                            break;
+                        case "Bowling":
+                            System.out.println("Added " + userLikes.get(i));
+                            urls.add(getUrl(latitude, longitude, "bowling_alley"));
+                            break;
+                        case "Zoo":
+                            System.out.println("Added " + userLikes.get(i));
+                            urls.add(getUrl(latitude, longitude, "zoo"));
+                            break;
+                        case "Shopping":
+                            System.out.println("Added " + userLikes.get(i));
+                            urls.add(getUrl(latitude, longitude, "shopping_mall"));
+                            break;
+
+                        default:
+                            System.out.println("I'm a default");
+                            break;
+                    }
+                }
+
+                nearbyPlacesList = new ArrayList<>();
+
+
                 transferData[0] = mMap;
-                transferData[1] = getUrl(latitude, longitude, activity);
-                transferData[2] = nearbyPlacesList2;
-                GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
+                transferData[1] = urls;
+                transferData[2] = nearbyPlacesList;
+                nearbyPlaces = new GetNearbyPlaces();
                 nearbyPlaces.execute(transferData);
+
 
                 Toast.makeText(this, "Looking for Nearby Activities", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Showing Nearby Activities", Toast.LENGTH_SHORT).show();

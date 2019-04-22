@@ -14,10 +14,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class GetNearbyPlaces extends AsyncTask <Object, String, String>
 {
 
-    private String googlePlaceData, url;
+    List<String> urls = new ArrayList<>();
+    private JSONArray googlePlaceData;
     private GoogleMap mMap;
     private List<HashMap<String,String>> nearbyPlacesList;
 
@@ -25,34 +31,54 @@ public class GetNearbyPlaces extends AsyncTask <Object, String, String>
     protected String doInBackground(Object... objects)
     {
         mMap = (GoogleMap) objects[0];
-        url = (String) objects[1];
+        urls = (List) objects[1];
         nearbyPlacesList = (List) objects[2];
+        googlePlaceData = new JSONArray();
+        for (int i = 0; i<urls.size(); i++)
+        {
 
         DownloadURL downloadURL = new DownloadURL();
         try
         {
-            googlePlaceData = downloadURL.ReadURL(url);
+            System.out.println(urls.get(i));
+            googlePlaceData.put((new JSONObject(downloadURL.ReadURL(urls.get(i)))).getJSONArray("results"));
+            System.out.println(new JSONObject(downloadURL.ReadURL(urls.get(i))).toString(2));
+
+            System.out.println("anfuisfsiufnsiudfiusdfisudfiusdbfiusdbff");
         } catch (IOException e)
         {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return googlePlaceData;
+        }
+        try {
+            System.out.println(googlePlaceData.toString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return googlePlaceData.toString();
     }
 
     @Override
     protected void onPostExecute(String s)
     {
         DataParser dataParser = new DataParser();
+        System.out.println(s);
+        System.out.println(s.length());
         nearbyPlacesList.addAll(dataParser.parse(s));
+        System.out.println("fjbshjkvbskdjbsjkbv");
         System.out.println(Arrays.toString(nearbyPlacesList.toArray()));
+        System.out.println(nearbyPlacesList.size());
         displayNearbyPlaces(nearbyPlacesList);
     }
 
     private void displayNearbyPlaces (List<HashMap<String,String>> nearbyPlacesList)
     {
+        System.out.println(nearbyPlacesList.size());
         for(int i=0; i<nearbyPlacesList.size(); i++)
         {
+            System.out.println(nearbyPlacesList.get(i));
             MarkerOptions markerOptions = new MarkerOptions();
 
             HashMap <String, String> googleNearbyPlace = nearbyPlacesList.get(i);
