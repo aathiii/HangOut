@@ -12,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
         android:text="Please Select Things you like"
         android:textAlignment="center"
-        android:textSize="30dp"
-        />
+        android:textSize="30dp" />
 
-    <!--  Category Layout: Cusines -->
+    <!--  Category Layout: Cuisines -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cusines"
+            android:text="Cuisines"
             android:textSize="40dp" />
 
         <!-- Button Group: needed to indent -->

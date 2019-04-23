@@ -1,33 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.viralandroid.googlemapsandroidapi.MapsActivity">
-
-        <Button
-            android:id="@+id/visited_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|top"
-            android:layout_marginTop="20dp"
-            android:onClick="onClick"
-            android:padding="10dp"
-            android:paddingLeft="70dp"
-            android:text="Interested"
-            android:translationZ="50dp" />
-
-    </fragment>
-
+    <!-- Menu Bar -->
     <!-- Menu Bar -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,8 +67,36 @@
             />
 
     </LinearLayout>
+    <!-- FrameLayout for Fragement -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.viralandroid.googlemapsandroidapi.MapsActivity" />
+
+        <Button
+            android:id="@+id/visited_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:layout_marginTop="20dp"
+            android:onClick="onClick"
+            android:padding="10dp"
+            android:paddingLeft="70dp"
+            android:text="Interested"
+            android:translationZ="50dp" />
+
+    </FrameLayout>
+
+    <!-- Intrested button in Framelayout -->
 
 
 
-
-</FrameLayout>
+</LinearLayout>

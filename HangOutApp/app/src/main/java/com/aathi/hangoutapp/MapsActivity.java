@@ -4,11 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.hardware.input.InputManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,7 +18,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,7 +30,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
@@ -62,7 +58,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -95,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps_2);
+        setContentView(R.layout.activity_maps);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         uid = auth.getCurrentUser().getUid();
@@ -167,11 +162,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMapToolbarEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
+            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
-                public boolean onMyLocationButtonClick()
-                {
-                    System.out.println("ifhsoudfhsiuvbsioudvnsidvbi");
+                public boolean onMyLocationButtonClick() {
                     MarkerOptions usermarkerOptions = new MarkerOptions();
                     Location userAddress = mMap.getMyLocation();
                     LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
@@ -179,7 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     longitude = userAddress.getLongitude();
 
                     usermarkerOptions.position(latLng);
-                    usermarkerOptions.title("You");
+                    usermarkerOptions.title("Current Location");
                     usermarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                     mMap.addMarker(usermarkerOptions);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -334,11 +327,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 List<HashMap<String, String>> nearbyPlacesList = new ArrayList<>();
 
 
-                    transferData[0] = mMap;
-                    transferData[1] = urls;
-                    transferData[2] = nearbyPlacesList;
-                    GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
-                    nearbyPlaces.execute(transferData);
+                transferData[0] = mMap;
+                transferData[1] = urls;
+                transferData[2] = nearbyPlacesList;
+                GetNearbyPlaces nearbyPlaces = new GetNearbyPlaces();
+                nearbyPlaces.execute(transferData);
 
 
                 Toast.makeText(this, "Looking for Nearby Restaurants", Toast.LENGTH_SHORT).show();
@@ -352,35 +345,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ArrayList<String> userLikes = previousScreen.getStringArrayListExtra("userLikes");
 
                 for (int i = 0; i < userLikes.size(); i++) {
-                    System.out.println(userLikes.get(i));
                     switch (userLikes.get(i)) {
                         case "Cinema":
-                            System.out.println("Added " + userLikes.get(i));
                             urls.add(getUrl(latitude, longitude, "movie_theater"));
                             break;
                         case "Park":
-                            System.out.println("Added " + userLikes.get(i));
                             urls.add(getUrl(latitude, longitude, "park"));
                             break;
                         case "Bar":
-                            System.out.println("Added " + userLikes.get(i));
                             urls.add(getUrl(latitude, longitude, "bar"));
                             break;
                         case "Bowling":
-                            System.out.println("Added " + userLikes.get(i));
                             urls.add(getUrl(latitude, longitude, "bowling_alley"));
                             break;
                         case "Zoo":
-                            System.out.println("Added " + userLikes.get(i));
                             urls.add(getUrl(latitude, longitude, "zoo"));
                             break;
                         case "Shopping":
-                            System.out.println("Added " + userLikes.get(i));
                             urls.add(getUrl(latitude, longitude, "shopping_mall"));
                             break;
 
                         default:
-                            System.out.println("I'm a default");
                             break;
                     }
                 }
@@ -403,9 +388,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.clear();
                 getRecommendation();
                 Toast.makeText(this, "Showing Recommendations Based On People with Similar Interests ", Toast.LENGTH_SHORT).show();
-                // Place recommened on map
-                // Clear search pins on map
-                // Add the description of places (adding names to pin)
                 break;
 
             case R.id.settings_button:

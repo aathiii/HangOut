@@ -40,6 +40,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mapButton;
@@ -49,25 +51,16 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> userLikes = new ArrayList<>();
 
 
-    /*
-     * TODO: MainActivity - Clean code
-     *
-     *
-     * */
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        if(auth.getCurrentUser() !=null)
-        {
+        if (auth.getCurrentUser() != null) {
             //User already signed in
             uid = auth.getCurrentUser().getUid();
-        }
-        else
-        {
+        } else {
             //Login --> No back-end action /Sign up --> Create the use
             startActivityForResult(AuthUI.getInstance()
                     .createSignInIntentBuilder()
@@ -85,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
-                System.out.println("12345678: I AM IN Logout");
                 startActivityForResult(AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(Arrays.asList(
@@ -97,12 +89,16 @@ public class MainActivity extends AppCompatActivity {
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                userLikes.clear();
                 getCheckedCategories();
+
 
                 // Add only selected items  from options
                 Intent intent = new Intent(view.getContext(), MapsActivity.class);
                 intent.putStringArrayListExtra("userLikes", userLikes);
                 startActivity(intent);
+
+
             }
         });
 
@@ -146,21 +142,15 @@ public class MainActivity extends AppCompatActivity {
         allCheckBoxes.add(zoo);
         allCheckBoxes.add(shopping);
 
+
+
         // Loop list and check each item for checked status
-        for (int i = 0; i < allCheckBoxes.size() ; i++) {
+        for (int i = 0; i < allCheckBoxes.size(); i++) {
             CheckBox current = allCheckBoxes.get(i);
-            if (current.isChecked()){
+            if (current.isChecked()) {
                 this.userLikes.add(current.getText().toString());
             }
         }
-
-        for (String s: userLikes) {
-            System.out.println(s);
-        }
-
-
-
-
         postUpdateLikes(userLikes);
     }
 
@@ -168,8 +158,7 @@ public class MainActivity extends AppCompatActivity {
         // Parse arraylist and create POST JSON request via Volley
         final String BASE_URL = "http://81.133.242.237:9920";
         final String endpoint = "/update_likes";
-        String URL =  BASE_URL + endpoint;
-        System.out.println("OUR URL IS: " + URL);
+        String URL = BASE_URL + endpoint;
 
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -181,11 +170,9 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject tempItem = new JSONObject();
                 tempItem.put("name", userLikes.get(i));
                 tempItem.put("type", "InterestedIn");
-                System.out.println("Before Sending to UpdateLikes Item: " + userLikes.get(i));
                 likes.put(tempItem);
             }
 
-            System.out.println("JSON Array Looks like this: " + likes.toString());
 
             jsonBody.put("likes", likes);
 
@@ -194,12 +181,10 @@ public class MainActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    System.out.println("On Response: " + response.toString());
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("On Error: " + error.toString());
                 }
             }) {
                 @Override
@@ -235,11 +220,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void postToBackend(String uid){
+    public void postToBackend(String uid) {
         final String BASE_URL = "http://81.133.242.237:9920";
         final String endpoint = "/signup";
-        String URL =  BASE_URL + endpoint;
-        System.out.println("OUR URL IS: " + URL);
+        String URL = BASE_URL + endpoint;
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             JSONObject jsonBody = new JSONObject();
@@ -249,12 +233,10 @@ public class MainActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    System.out.println("On Response: " + response.toString());
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("On Error: " + error.toString());
                 }
             }) {
                 @Override
@@ -288,8 +270,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 
 
 }

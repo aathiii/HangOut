@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DataParser
-{
-    private HashMap <String, String> getSingleNearbyPlace(JSONObject googleplaceJSON)
-    {
+public class DataParser {
+    private HashMap<String, String> getSingleNearbyPlace(JSONObject googleplaceJSON) {
         HashMap<String, String> googlePlaceMap = new HashMap<>();
         String nameOfPlace = "-NA-";
         String vicinity = "-NA-";
@@ -19,14 +17,11 @@ public class DataParser
         String longitude = "";
         String reference = "";
 
-        try
-        {
-            if(!googleplaceJSON.isNull("name"))
-            {
+        try {
+            if (!googleplaceJSON.isNull("name")) {
                 nameOfPlace = googleplaceJSON.getString("name");
             }
-            if(!googleplaceJSON.isNull("vicinity"))
-            {
+            if (!googleplaceJSON.isNull("vicinity")) {
                 vicinity = googleplaceJSON.getString("vicinity");
             }
             latitude = googleplaceJSON.getJSONObject("geometry").getJSONObject("location").getString("lat");
@@ -39,9 +34,7 @@ public class DataParser
             googlePlaceMap.put("longitude", longitude);
             googlePlaceMap.put("reference", reference);
 
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -49,22 +42,17 @@ public class DataParser
 
     }
 
-    private List<HashMap<String, String>> getAllNearbyPlaces(JSONArray jsonArray)
-    {
+    private List<HashMap<String, String>> getAllNearbyPlaces(JSONArray jsonArray) {
         int counter = jsonArray.length();
         List<HashMap<String, String>> NearbyPlacesList = new ArrayList<>();
 
         HashMap<String, String> NearbyPlacesMap = null;
 
-        for(int i=0; i<counter; i++)
-        {
-            try
-            {
+        for (int i = 0; i < counter; i++) {
+            try {
                 NearbyPlacesMap = getSingleNearbyPlace((JSONObject) jsonArray.get(i));
                 NearbyPlacesList.add(NearbyPlacesMap);
-            }
-            catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -72,35 +60,21 @@ public class DataParser
 
     }
 
-    public  List<HashMap<String,String>> parse(String jSONdata)
-    {
+    public List<HashMap<String, String>> parse(String jSONdata) {
         JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject;
+        try {
 
-
-        try
-        {
-            System.out.println("oijuhnmkjuhnmkjnm,k");
-            System.out.println(jSONdata);
-            //jsonObject = new JSONObject(jSONdata);
-            //System.out.println(jsonObject);
-            //System.out.println(jsonObject.toString(2));
             JSONArray data = new JSONArray(jSONdata);
             JSONArray tmp;
-            for (int i = 0; i<data.length(); i++){
+            for (int i = 0; i < data.length(); i++) {
                 tmp = (JSONArray) data.get(i);
-                for (int j = 0; j<tmp.length(); j++){
+                for (int j = 0; j < tmp.length(); j++) {
                     jsonArray.put(tmp.get(j));
                 }
             }
-            System.out.println(jsonArray);
-            System.out.println(jsonArray.length());
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return getAllNearbyPlaces(jsonArray);
     }
 
